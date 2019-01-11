@@ -1,0 +1,28 @@
+environment:
+   LANG: en_US.utf-8
+
+init:
+ - appveyor version
+ - sh: echo $APPVEYOR_BUILD_WORKER_IMAGE
+ - sh: echo $APPVEYOR_BUILD_WORKER_CLOUD
+ - sh: lsb_release -d
+ - sh: export LANG=en_US.utf8
+ 
+test_script:
+  - ps: |
+      if ($(Get-Culture).Name -eq "en-US" ) { 
+          echo "Get-Culture is ok" 
+        } else {
+          echo "Get-Culture is not set properly"
+          exit 1
+        }
+  - sh: pwsh -c 'if ($(Get-Culture).Name -eq "en-US" ) { echo "Get-Culture is ok" } else { echo "Get-Culture is not set properly"; exit 1 }'
+  - sh: |
+      if [[ "$(env | grep '^LANG=')" =~ en_US.utf8 ]]; then 
+      	echo "Env is ok"
+      	else
+      	echo "Environment variable LANG is not set properly."
+      	exit 1
+      fi
+  - sh: locale
+  - sh: locale -a
