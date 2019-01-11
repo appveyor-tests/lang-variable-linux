@@ -26,3 +26,6 @@ test_script:
       fi
   - sh: locale
   - sh: locale -a
+
+
+build: off
